@@ -1,10 +1,52 @@
-import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
+"use client";
 
-export default async function Notes() {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
-  const { data: notes, error } = await supabase.from("notes").select();
+import { createClient } from "@/utils/supabase/client";
+import { useEffect, useState } from "react";
 
-  return <pre>{JSON.stringify(notes, null, 2)}</pre>;
+export default function Notes() {
+  const supabase = createClient();
+
+  // const { data: { user } } = await supabase.auth.getUser()
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    (async () => {
+      const {
+        data: { user: _user },
+      } = await supabase.auth.getUser();
+      setUser(_user);
+    })();
+  }, []);
+
+  const login = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        queryParams: {
+          access_type: "offline",
+          prompt: "consent",
+        },
+
+        redirectTo: "http://localhost:3000/notes",
+      },
+    });
+  };
+
+  return (
+    <div>
+      {/* <Auth
+        supabaseClient={supabase}
+        appearance={{ theme: ThemeSupa }}
+        providers={["google"]}
+        onlyThirdPartyProviders
+        redirectTo="/notes"
+      /> */}
+
+      {/* <SignIn /> */}
+
+      <pre style={{ fontSize: 10 }}>user:{JSON.stringify(user, null, 4)}</pre>
+
+      <button onClick={() => login()}>ログイン</button>
+    </div>
+  );
 }
