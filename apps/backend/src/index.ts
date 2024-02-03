@@ -18,6 +18,11 @@ app.post('/messages', (req: Request<{}, {}, MessageRequest>, res: Response) => {
   res.status(200).json({ message })
 })
 
+app.get('/messages',(req, res) => {
+  const messages = ['message1','message2'];
+  res.status(200).json({ messages })
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
