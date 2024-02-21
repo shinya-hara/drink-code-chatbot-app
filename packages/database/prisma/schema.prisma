@@ -12,8 +12,13 @@ datasource db {
 }
 
 model User {
-  id        String   @id @db.Uuid
-  type      UserType
+  id   String   @id @db.Uuid
+  type UserType
+
+  chatRooms         UsersChatRooms[]
+  chatMessages      ChatMessage[]
+  AutoReplyMessages AutoReplyMessage[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -21,4 +26,52 @@ model User {
 enum UserType {
   USER
   BOT
+}
+
+model ChatRoom {
+  id   String @id @db.Uuid
+  name String
+
+  users       UsersChatRooms[]
+  chatMessage ChatMessage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UsersChatRooms {
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @db.Uuid
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id])
+  chatRoomId String   @db.Uuid
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([userId, chatRoomId])
+}
+
+model ChatMessage {
+  id      Int  @id @default(autoincrement())
+  content Json @db.JsonB
+
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @db.Uuid
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id])
+  chatRoomId String   @db.Uuid
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AutoReplyMessage {
+  id      Int  @id @default(autoincrement())
+  content Json @db.JsonB
+  trigger Json @db.JsonB
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @db.Uuid
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
