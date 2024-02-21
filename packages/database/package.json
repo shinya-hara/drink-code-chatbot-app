@@ -1,6 +1,13 @@
 {
   "name": "database",
   "version": "0.0.0",
+  "scripts": {
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:seed": "tsx src/seed.ts",
+    "format": "prisma format"
+  },
   "dependencies": {
     "@prisma/client": "^5.9.1"
   },
