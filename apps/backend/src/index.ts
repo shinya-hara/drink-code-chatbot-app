@@ -1,12 +1,19 @@
 import express, { Request, Response } from 'express';
+import { auth } from './middlewares/auth';
+import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 
+dotenv.config();
 const app = express();
 const port = 3001;
 
+app.use(cookieParser());
 app.use(express.json());
 
+app.use(auth);
+
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
+  res.status(200).json({ user: req.body.user });
 });
 
 interface MessageRequest {

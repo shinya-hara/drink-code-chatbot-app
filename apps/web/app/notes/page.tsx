@@ -11,10 +11,9 @@ export default function Notes() {
 
   useEffect(() => {
     (async () => {
-      const {
-        data: { user: _user },
-      } = await supabase.auth.getUser();
-      setUser(_user);
+      const { data } = await supabase.auth.getSession();
+      console.log(data, "data");
+      setUser(data);
     })();
   }, []);
 
@@ -44,7 +43,15 @@ export default function Notes() {
 
       {/* <SignIn /> */}
 
-      <pre style={{ fontSize: 10 }}>user:{JSON.stringify(user, null, 4)}</pre>
+      <button
+        onClick={() => {
+          fetch("http://localhost:3000/api", { credentials: "include" });
+        }}
+      >
+        fetch
+      </button>
+
+      <pre style={{ fontSize: 10 }}>{JSON.stringify(user, null, 4)}</pre>
 
       <button onClick={() => login()}>ログイン</button>
     </div>
