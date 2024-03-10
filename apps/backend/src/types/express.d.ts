@@ -1,4 +1,4 @@
-import { type User } from 'prisma';
+import { type User } from '@prisma/client';
 export {};
 
 declare global {
