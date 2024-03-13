@@ -15,8 +15,7 @@ paths:
       responses:
         '200':
           description: OK
-      parameters:
-        - $ref: '#/components/parameters/auth'
+      parameters: []
       requestBody:
         content:
           application/json:
@@ -61,17 +60,9 @@ paths:
             examples: {}
         description: Post the necessary fields for the API to create a new user.
       description: Create a new user.
-      parameters:
-        - $ref: '#/components/parameters/auth'
+      parameters: []
     parameters: []
 components:
   schemas: {}
   requestBodies: {}
-  parameters:
-    auth:
-      name: auth
-      in: cookie
-      required: true
-      schema:
-        type: string
-      description: アクセストークン
+  parameters: {}
