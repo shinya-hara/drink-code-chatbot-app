@@ -7,7 +7,7 @@ export default function ChatRoom() {
 
   const postChatMessage = async (message: string) => {
     await customFetch
-      .post("message", { message })
+      .post("/messages", { message, chatRoomId })
       .then((res) => res.json())
       .then((res: { message: string }) => {
         console.log("Success", res);
