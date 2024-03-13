@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import { CreateChatRoomUseCase } from './usecases/createChatRoomUseCase';
 import { prisma } from './lib/prisma';
+import { CreateMessageUseCase } from './usecases/createMessageUseCase';
 
 dotenv.config();
 const app = express();
@@ -22,19 +23,29 @@ interface MessageRequest {
   message: string;
 }
 
-app.post('/messages', (req: Request<{}, {}, MessageRequest>, res: Response) => {
-  const message = req.body.message;
-  res.status(200).json({ message });
-});
+// app.post('/messages', (req: Request<{}, {}, MessageRequest>, res: Response) => {
+//   const message = req.body.message;
+//   res.status(200).json({ message });
+// });
 
-app.get('/messages', (req, res) => {
-  const messages = ['message1', 'message2'];
-  res.status(200).json({ messages });
-});
+// app.get('/messages', (req, res) => {
+//   const messages = ['message1', 'message2'];
+//   res.status(200).json({ messages });
+// });
 
 app.post('/chat-rooms', async (req, res) => {
   const useCase = new CreateChatRoomUseCase(prisma);
   const result = await useCase.execute({ user: req.user, name: req.body.name });
+  res.status(201).json(result);
+});
+
+app.post('/messages', async (req, res) => {
+  const useCase = new CreateMessageUseCase(prisma);
+  const result = await useCase.execute({
+    user: req.user,
+    message: req.body.message,
+    chatRoomId: req.body.chatRoomId,
+  });
   res.status(201).json(result);
 });
 
