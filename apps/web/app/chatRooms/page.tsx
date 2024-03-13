@@ -22,12 +22,23 @@ export default function ChatRooms() {
     <div>
       <h1>Chat Rooms</h1>
 
-      <button
-        className="py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
-        onClick={() => createChatRoom("Room 1")}
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          const formData = new FormData(event.target as HTMLFormElement);
+          const name = formData.get("chat-room-name");
+          if (typeof name !== "string") return;
+          createChatRoom(name);
+        }}
       >
-        Create new chat room!
-      </button>
+        <input type="text" name="chat-room-name" />
+        <button
+          className="py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
+          type="submit"
+        >
+          Create new chat room!
+        </button>
+      </form>
     </div>
   );
 }
