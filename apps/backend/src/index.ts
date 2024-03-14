@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import { CreateChatRoomUseCase } from './usecases/createChatRoomUseCase';
 import { prisma } from './lib/prisma';
 import { CreateMessageUseCase } from './usecases/createMessageUseCase';
+import { GetChatRoomsUseCase } from './usecases/getChatRoomsUseCase';
 
 dotenv.config();
 const app = express();
@@ -32,6 +33,12 @@ interface MessageRequest {
 //   const messages = ['message1', 'message2'];
 //   res.status(200).json({ messages });
 // });
+
+app.get('/chat-rooms', async (req, res) => {
+  const useCase = new GetChatRoomsUseCase(prisma);
+  const result = await useCase.execute({ user: req.user });
+  res.status(201).json(result);
+});
 
 app.post('/chat-rooms', async (req, res) => {
   const useCase = new CreateChatRoomUseCase(prisma);
