@@ -1,17 +1,10 @@
 "use client";
+import { customFetch } from "@/utils/fetch";
 
 export default function ChatRooms() {
   const createChatRoom = async (name: string) => {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/chat-rooms`, {
-      method: "POST",
-      body: JSON.stringify({
-        name,
-      }),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    customFetch
+      .post("/chat-rooms", { name })
       .then((res) => res.json())
       .then((res: { message: string }) => {
         console.log("Success", res);
@@ -21,6 +14,8 @@ export default function ChatRooms() {
   return (
     <div>
       <h1>Chat Rooms</h1>
+
+      {/* TODO: チャットルーム一覧取得してここに出す */}
 
       <form
         onSubmit={(event) => {
