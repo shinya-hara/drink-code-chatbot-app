@@ -1,0 +1,68 @@
+openapi: 3.1.0
+x-stoplight:
+  id: bnt6hxsu8jn08
+info:
+  title: dc-chat
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /chat-rooms:
+    parameters: []
+    post:
+      summary: Create Chat Room
+      operationId: post-chat-rooms
+      responses:
+        '200':
+          description: OK
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  x-stoplight:
+                    id: iru5wa74umru9
+                  description: チャットルームの名前
+              required:
+                - name
+  /messages:
+    post:
+      summary: Post Chat Message
+      operationId: post-user
+      responses:
+        '400':
+          description: Missing Required Information
+        '409':
+          description: Email Already Taken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  x-stoplight:
+                    id: vhg5rv4s1o1s8
+                  description: メッセージの内容
+                chatRoomId:
+                  type: string
+                  x-stoplight:
+                    id: qmtjmy6l24emx
+                  description: メッセージを送信したチャットルームのUuid
+              required:
+                - message
+                - chatRoomId
+            examples: {}
+        description: Post the necessary fields for the API to create a new user.
+      description: Create a new user.
+      parameters: []
+    parameters: []
+components:
+  schemas: {}
+  requestBodies: {}
+  parameters: {}
