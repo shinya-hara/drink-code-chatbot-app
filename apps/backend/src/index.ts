@@ -37,7 +37,7 @@ interface MessageRequest {
 app.get('/chat-rooms', async (req, res) => {
   const useCase = new GetChatRoomsUseCase(prisma);
   const result = await useCase.execute({ user: req.user });
-  res.status(201).json(result);
+  res.status(200).json(result);
 });
 
 app.post('/chat-rooms', async (req, res) => {
