@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { customFetch } from "@/utils/fetch";
+import Link from "next/link";
 
 export default function ChatRooms() {
   // TODO: レスポンスの型を定義する
@@ -35,7 +36,16 @@ export default function ChatRooms() {
 
       <ul>
         {chatRooms.map((chatRoom: any) => {
-          return <li key={chatRoom.id}>{chatRoom.chatRoom.name}</li>;
+          return (
+            <li key={chatRoom.chatRoom.id}>
+              <Link
+                href={`/chatRooms/${chatRoom.chatRoom.id}`}
+                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              >
+                {chatRoom.chatRoom.name}
+              </Link>
+            </li>
+          );
         })}
       </ul>
 
