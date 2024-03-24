@@ -38,6 +38,8 @@ export default function ChatRoom() {
       .then((res) => res.json())
       .then((res: { message: string }) => {
         console.log("Success", res);
+        // TODO: チャットルームの更新（メッセージの再取得）
+        // Supabase の Realtime API 使えるなら使ってみたい @see https://supabase.com/docs/guides/realtime
       });
   };
 
