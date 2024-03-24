@@ -2,10 +2,11 @@ import express, { Request, Response } from 'express';
 import { auth } from './middlewares/auth';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
-import { CreateChatRoomUseCase } from './usecases/createChatRoomUseCase';
 import { prisma } from './lib/prisma';
+import { CreateChatRoomUseCase } from './usecases/createChatRoomUseCase';
 import { CreateMessageUseCase } from './usecases/createMessageUseCase';
 import { GetChatRoomsUseCase } from './usecases/getChatRoomsUseCase';
+import { GetChatMessagesUseCase } from './usecases/getChatMessagesUseCase';
 
 dotenv.config();
 const app = express();
@@ -44,6 +45,15 @@ app.post('/chat-rooms', async (req, res) => {
   const useCase = new CreateChatRoomUseCase(prisma);
   const result = await useCase.execute({ user: req.user, name: req.body.name });
   res.status(201).json(result);
+});
+
+app.get('/chat-rooms/:id/messages', async (req, res) => {
+  const useCase = new GetChatMessagesUseCase(prisma);
+  const result = await useCase.execute({
+    user: req.user,
+    chatRoomId: req.params.id,
+  });
+  res.status(200).json(result);
 });
 
 app.post('/messages', async (req, res) => {
