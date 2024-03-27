@@ -1,23 +1,16 @@
-import { PrismaClient, UserType } from '@prisma/client';
+import { UserRepository } from '../domains/repositories/UserRepository';
+import { User, UserType } from '../domains/entities/User';
 
 export class ResolveUserUseCase {
-  constructor(private _prisma: PrismaClient) {}
+  constructor(private repository: UserRepository) {}
 
   async execute(supabaseUserId: string) {
-    const user = await this._prisma.user.findUnique({
-      where: {
-        id: supabaseUserId,
-      },
-    });
-    if (user) return user;
+    const foundUser = await this.repository.findUniqueById(supabaseUserId);
+    if (foundUser) return foundUser;
 
     // ユーザーがいなければ新規作成する
-    const createdUser = this._prisma.user.create({
-      data: {
-        id: supabaseUserId,
-        type: UserType.USER,
-      },
-    });
+    const userInstance = User.create({ type: UserType.User });
+    const createdUser = this.repository.create(userInstance);
     return createdUser;
   }
 }

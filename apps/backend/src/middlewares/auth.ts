@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import { createClient } from '../lib/supabase';
 import { ResolveUserUseCase } from '../usecases/resolveUserUseCase';
 import { prisma } from '../lib/prisma';
+import { UserRepositoryImpl } from '../repositories/UserRepositoryImpl';
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   // Create supabase client
@@ -15,7 +16,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
   if (error) throw error;
   if (!user) throw new Error('user not found'); // TODO: エラーハンドリング
 
-  const useCase = new ResolveUserUseCase(prisma);
+  const useCase = new ResolveUserUseCase(new UserRepositoryImpl(prisma));
 
   const _user = await useCase.execute(user.id);
   req.user = _user;
