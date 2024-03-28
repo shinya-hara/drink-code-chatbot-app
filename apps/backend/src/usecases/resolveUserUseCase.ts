@@ -9,7 +9,10 @@ export class ResolveUserUseCase {
     if (foundUser) return foundUser;
 
     // ユーザーがいなければ新規作成する
-    const userInstance = User.create({ type: UserType.User });
+    const userInstance = User.create({
+      id: supabaseUserId,
+      type: UserType.User,
+    });
     const createdUser = this.repository.create(userInstance);
     return createdUser;
   }
