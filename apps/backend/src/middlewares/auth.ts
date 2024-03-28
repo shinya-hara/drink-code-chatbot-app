@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import { createClient } from '../lib/supabase';
 import { ResolveUserUseCase } from '../usecases/resolveUserUseCase';
 import { prisma } from '../lib/prisma';
-import { UserRepositoryImpl } from '../repositories/UserRepositoryImpl';
+import { UserRepositoryImpl } from '../repositories/supabase/UserRepositoryImpl';
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   // Create supabase client
