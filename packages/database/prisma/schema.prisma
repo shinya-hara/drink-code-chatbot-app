@@ -29,6 +29,7 @@ enum UserType {
 }
 
 model ChatRoom {
+  // TODO: idのデフォルト値を設定する
   id   String @id @db.Uuid
   name String
 
