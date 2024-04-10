@@ -1,4 +1,3 @@
-import { ChatRoom } from '@/domains/entities/ChatRoom';
 import { User } from '@/domains/entities/User';
 import { ChatRoomRepositoryImpl } from '@/repositories/supabase/ChatRoomRepositoryImpl';
 import { GetChatRoomsUseCase } from '@/usecases/getChatRoomsUseCase';
@@ -31,6 +30,4 @@ describe('getChatRoomsUseCase', () => {
     // then
     expect(spy).toHaveBeenCalledWith('1');
   });
-
-  it.todo('ユーザーIDに対応するチャットルームが見つからなければ何も返さない');
 });
