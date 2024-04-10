@@ -1,7 +1,9 @@
-import { PrismaClient, type User, type ChatRoom } from '@prisma/client';
+import { type User } from '@prisma/client';
+import { ChatRoomRepository } from '../domains/repositories/ChatRoomRepository';
+import { ChatRoom } from '../domains/entities/ChatRoom';
 
 export class CreateChatRoomUseCase {
-  constructor(private prisma: PrismaClient) {}
+  constructor(private repository: ChatRoomRepository) {}
 
   async execute({
     user,
@@ -10,19 +12,6 @@ export class CreateChatRoomUseCase {
     user: User;
     name: string;
   }): Promise<ChatRoom> {
-    const chatRoom = await this.prisma.chatRoom.create({
-      data: {
-        id: crypto.randomUUID(),
-        name,
-      },
-    });
-    await this.prisma.usersChatRooms.create({
-      data: {
-        userId: user.id,
-        chatRoomId: chatRoom.id,
-      },
-    });
-
-    return chatRoom;
+    return await this.repository.create(user.id, name);
   }
 }
