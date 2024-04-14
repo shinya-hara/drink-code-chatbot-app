@@ -1,4 +1,4 @@
-import { type User } from '@prisma/client';
+import { User } from '@/domains/entities/User';
 export {};
 
 declare global {
