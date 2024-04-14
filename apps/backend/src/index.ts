@@ -7,6 +7,8 @@ import { CreateChatRoomUseCase } from './usecases/createChatRoomUseCase';
 import { CreateMessageUseCase } from './usecases/createMessageUseCase';
 import { GetChatRoomsUseCase } from './usecases/getChatRoomsUseCase';
 import { GetChatMessagesUseCase } from './usecases/getChatMessagesUseCase';
+import { ChatRoomRepositoryImpl } from './repositories/supabase/ChatRoomRepositoryImpl';
+import { ChatMessageRepositoryImpl } from './repositories/supabase/ChatMessageRepositoryImpl';
 
 dotenv.config();
 const app = express();
@@ -36,19 +38,22 @@ interface MessageRequest {
 // });
 
 app.get('/chat-rooms', async (req, res) => {
-  const useCase = new GetChatRoomsUseCase(prisma);
+  const useCase = new GetChatRoomsUseCase(new ChatRoomRepositoryImpl(prisma));
   const result = await useCase.execute({ user: req.user });
   res.status(200).json(result);
 });
 
 app.post('/chat-rooms', async (req, res) => {
-  const useCase = new CreateChatRoomUseCase(prisma);
+  const useCase = new CreateChatRoomUseCase(new ChatRoomRepositoryImpl(prisma));
   const result = await useCase.execute({ user: req.user, name: req.body.name });
   res.status(201).json(result);
 });
 
 app.get('/chat-rooms/:id/messages', async (req, res) => {
-  const useCase = new GetChatMessagesUseCase(prisma);
+  const useCase = new GetChatMessagesUseCase(
+    new ChatMessageRepositoryImpl(prisma),
+    prisma,
+  );
   const result = await useCase.execute({
     user: req.user,
     chatRoomId: req.params.id,
@@ -57,7 +62,9 @@ app.get('/chat-rooms/:id/messages', async (req, res) => {
 });
 
 app.post('/messages', async (req, res) => {
-  const useCase = new CreateMessageUseCase(prisma);
+  const useCase = new CreateMessageUseCase(
+    new ChatMessageRepositoryImpl(prisma),
+  );
   const result = await useCase.execute({
     user: req.user,
     message: req.body.message,

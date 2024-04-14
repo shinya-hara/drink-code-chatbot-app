@@ -1,6 +1,9 @@
-import { PrismaClient, type User, type ChatRoom } from '@prisma/client';
+import { ChatMessage } from '@/domains/entities/ChatMessage';
+import { User } from '@/domains/entities/User';
+import { ChatMessageRepository } from '@/domains/repositories/ChatMessageRepository';
+
 export class CreateMessageUseCase {
-  constructor(private prisma: PrismaClient) {}
+  constructor(private _repository: ChatMessageRepository) {}
 
   /**
    * メッセージの作成
@@ -14,6 +17,11 @@ export class CreateMessageUseCase {
     user: User;
     chatRoomId: string;
   }) {
+    const chatMessage = ChatMessage.create({
+      content: { type: 'text', text: message },
+      user,
+      chatRoomId,
+    });
     /**
      * contentの型
      * {
@@ -21,17 +29,6 @@ export class CreateMessageUseCase {
      *    text: 'message text'
      * }
      */
-    const chatMessage = await this.prisma.chatMessage.create({
-      data: {
-        userId: user.id,
-        content: JSON.stringify({
-          type: 'text',
-          text: message,
-        }),
-        chatRoomId: chatRoomId,
-      },
-    });
-
-    return chatMessage;
+    return await this._repository.create(chatMessage);
   }
 }
