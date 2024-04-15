@@ -1,3 +1,5 @@
+import { ChatMessageId } from '../valueObject/ChatMessageId';
+import { ChatRoomId } from '../valueObject/chatRoomId';
 import { ChatRoom } from './ChatRoom';
 import { User } from './User';
 
@@ -11,8 +13,8 @@ export class ChatMessage {
     private _content: ContentType,
     private _createdAt: Date,
     private _user: User,
-    private _chatRoomId: string,
-    private _id?: number,
+    private _chatRoomId: ChatRoomId,
+    private _id?: ChatMessageId,
   ) {}
 
   static create({
@@ -22,7 +24,7 @@ export class ChatMessage {
   }: {
     content: ContentType;
     user: User;
-    chatRoomId: string;
+    chatRoomId: ChatRoomId;
   }) {
     const now = new Date();
     return new ChatMessage(content, now, user, chatRoomId);
@@ -35,17 +37,17 @@ export class ChatMessage {
     user,
     chatRoomId,
   }: {
-    id: number;
+    id: ChatMessageId;
     content: string;
     createdAt: Date;
     user: User;
-    chatRoomId: string;
+    chatRoomId: ChatRoomId;
   }) {
     const parsedContent = JSON.parse(content);
     return new ChatMessage(parsedContent, createdAt, user, chatRoomId, id);
   }
 
-  public get id(): number {
+  public get id(): ChatMessageId {
     if (this._id == null) throw new Error();
     return this._id;
   }
@@ -62,7 +64,7 @@ export class ChatMessage {
     return this._user;
   }
 
-  public get chatRoomId(): string {
+  public get chatRoomId(): ChatRoomId {
     return this._chatRoomId;
   }
 }

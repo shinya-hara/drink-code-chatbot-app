@@ -1,6 +1,9 @@
 import { ChatMessage } from '@/domains/entities/ChatMessage';
 import { User } from '@/domains/entities/User';
 import { ChatMessageRepository } from '@/domains/repositories/ChatMessageRepository';
+import { ChatMessageId } from '@/domains/valueObject/ChatMessageId';
+import { ChatRoomId } from '@/domains/valueObject/chatRoomId';
+import { UserId } from '@/domains/valueObject/userId';
 import { PrismaClient } from '@prisma/client';
 
 export class ChatMessageRepositoryImpl implements ChatMessageRepository {
@@ -27,17 +30,17 @@ export class ChatMessageRepositoryImpl implements ChatMessageRepository {
       ({ id, content, chatRoomId, createdAt, user: rawUser }) => {
         if (typeof content !== 'string') throw new Error();
         const user = User.reconstruct({
-          id: rawUser.id,
+          id: new UserId(rawUser.id),
           type: rawUser.type,
           createdAt: rawUser.createdAt,
           updatedAt: rawUser.updatedAt,
         });
 
         return ChatMessage.reconstruct({
-          id,
+          id: new ChatMessageId(id),
           content,
           user,
-          chatRoomId,
+          chatRoomId: new ChatRoomId(chatRoomId),
           createdAt,
         });
       },
@@ -49,9 +52,9 @@ export class ChatMessageRepositoryImpl implements ChatMessageRepository {
   async create(chatMessage: ChatMessage): Promise<ChatMessage> {
     await this._prisma.chatMessage.create({
       data: {
-        userId: chatMessage.user.id,
+        userId: chatMessage.user.id.value,
         content: chatMessage.content,
-        chatRoomId: chatMessage.chatRoomId,
+        chatRoomId: chatMessage.chatRoomId.value,
         createdAt: chatMessage.createdAt,
         updatedAt: chatMessage.createdAt,
       },
