@@ -5,7 +5,7 @@ export class UserRepositoryImpl implements UserRepository {
   constructor(private _users: User[] = []) {}
 
   async findUniqueById(id: string): Promise<User | void> {
-    const user = this._users.find((user) => user.id === id);
+    const user = this._users.find((user) => user.id.value === id);
 
     if (!user) return;
 

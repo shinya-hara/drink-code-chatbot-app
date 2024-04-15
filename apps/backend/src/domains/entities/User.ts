@@ -1,20 +1,22 @@
 import crypto from 'crypto';
+import { UserId } from '../valueObject/userId';
+
 export const UserType = { User: 'USER', Bot: 'BOT' } as const;
 export type UserType = (typeof UserType)[keyof typeof UserType];
 
 export class User {
   private constructor(
-    private _id: string,
+    private _id: UserId,
     private _type: UserType,
     private _createdAt: Date,
     private _updatedAt: Date,
   ) {}
 
   static create({
-    id = crypto.randomUUID(),
+    id = new UserId(crypto.randomUUID()),
     type,
   }: {
-    id?: string;
+    id?: UserId;
     type: UserType;
   }) {
     const now = new Date();
@@ -27,7 +29,7 @@ export class User {
     createdAt,
     updatedAt,
   }: {
-    id: string;
+    id: UserId;
     type: UserType;
     createdAt: Date;
     updatedAt: Date;
