@@ -1,6 +1,7 @@
 import { User } from '../entities/User';
+import { UserId } from '../valueObject/userId';
 
 export interface UserRepository {
-  findUniqueById(id: string): Promise<User | void>;
+  findUniqueById(id: UserId): Promise<User | void>;
   create(user: User): Promise<User>;
 }

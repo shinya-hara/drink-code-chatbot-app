@@ -6,10 +6,10 @@ import { PrismaClient } from '@prisma/client';
 export class UserRepositoryImpl implements UserRepository {
   constructor(private _prisma: PrismaClient) {}
 
-  async findUniqueById(id: string): Promise<User | void> {
+  async findUniqueById(id: UserId): Promise<User | void> {
     const _user = await this._prisma.user.findUnique({
       where: {
-        id,
+        id: id.value,
       },
     });
 
