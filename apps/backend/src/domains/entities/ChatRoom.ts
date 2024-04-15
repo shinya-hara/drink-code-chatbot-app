@@ -1,15 +1,18 @@
+import { ChatRoomName } from '../valueObject/ChatRoomName';
+import { ChatRoomId } from '../valueObject/chatRoomId';
+
 export class ChatRoom {
   private constructor(
-    private _id: string,
-    private _name: string,
+    private _id: ChatRoomId,
+    private _name: ChatRoomName,
   ) {}
 
-  static create({ name }: { name: string }) {
-    const id = crypto.randomUUID();
+  static create({ name }: { name: ChatRoomName }) {
+    const id = new ChatRoomId(crypto.randomUUID());
     return new ChatRoom(id, name);
   }
 
-  static reconstruct({ id, name }: { id: string; name: string }) {
+  static reconstruct({ id, name }: { id: ChatRoomId; name: ChatRoomName }) {
     return new ChatRoom(id, name);
   }
 

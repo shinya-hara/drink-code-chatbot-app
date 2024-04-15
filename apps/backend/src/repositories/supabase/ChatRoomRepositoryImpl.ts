@@ -1,5 +1,7 @@
 import { ChatRoom } from '@/domains/entities/ChatRoom';
 import { ChatRoomRepository } from '@/domains/repositories/ChatRoomRepository';
+import { ChatRoomName } from '@/domains/valueObject/ChatRoomName';
+import { ChatRoomId } from '@/domains/valueObject/chatRoomId';
 import { PrismaClient } from '@prisma/client';
 
 export class ChatRoomRepositoryImpl implements ChatRoomRepository {
@@ -16,7 +18,10 @@ export class ChatRoomRepositoryImpl implements ChatRoomRepository {
     });
 
     return _usersChatRooms.map(({ chatRoom }) =>
-      ChatRoom.reconstruct({ id: chatRoom.id, name: chatRoom.name }),
+      ChatRoom.reconstruct({
+        id: new ChatRoomId(chatRoom.id),
+        name: new ChatRoomName(chatRoom.name),
+      }),
     );
   }
 
@@ -34,6 +39,9 @@ export class ChatRoomRepositoryImpl implements ChatRoomRepository {
       },
     });
 
-    return ChatRoom.reconstruct({ id: _chatRoom.id, name: _chatRoom.name });
+    return ChatRoom.reconstruct({
+      id: new ChatRoomId(_chatRoom.id),
+      name: new ChatRoomName(_chatRoom.name),
+    });
   }
 }
