@@ -1,4 +1,5 @@
 import { User } from '@/domains/entities/User';
+import { UserId } from '@/domains/valueObject/userId';
 import { ChatRoomRepositoryImpl } from '@/repositories/supabase/ChatRoomRepositoryImpl';
 import { GetChatRoomsUseCase } from '@/usecases/getChatRoomsUseCase';
 import { PrismaClient } from '@prisma/client';
@@ -7,7 +8,7 @@ describe('getChatRoomsUseCase', () => {
   it('正しい引数がわたされているか', () => {
     // given
     const user = User.create({
-      id: '1',
+      id: new UserId('1'),
       type: 'USER',
     });
     const mockedClient = {
@@ -28,6 +29,6 @@ describe('getChatRoomsUseCase', () => {
     usecase.execute({ user });
 
     // then
-    expect(spy).toHaveBeenCalledWith('1');
+    expect(spy).toHaveBeenCalledWith(user.id);
   });
 });
