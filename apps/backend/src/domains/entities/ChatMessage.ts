@@ -1,5 +1,5 @@
 import { ChatMessageId } from '../valueObject/ChatMessageId';
-import { ChatRoomId } from '../valueObject/chatRoomId';
+import { ChatRoomId } from '../valueObject/ChatRoomId';
 import { ChatRoom } from './ChatRoom';
 import { User } from './User';
 

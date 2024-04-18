@@ -1,5 +1,5 @@
 import { User } from '@/domains/entities/User';
-import { UserId } from '@/domains/valueObject/userId';
+import { UserId } from '@/domains/valueObject/UserId';
 import { ChatRoomRepositoryImpl } from '@/repositories/supabase/ChatRoomRepositoryImpl';
 import { GetChatRoomsUseCase } from '@/usecases/getChatRoomsUseCase';
 import { PrismaClient } from '@prisma/client';

@@ -1,7 +1,7 @@
 import { User } from '@/domains/entities/User';
 import { ChatRoomRepository } from '../domains/repositories/ChatRoomRepository';
 import { ChatRoom } from '../domains/entities/ChatRoom';
-import { ChatRoomName } from '@/domains/valueObject/chatRoomName';
+import { ChatRoomName } from '@/domains/valueObject/ChatRoomName';
 
 export class CreateChatRoomUseCase {
   constructor(private repository: ChatRoomRepository) {}

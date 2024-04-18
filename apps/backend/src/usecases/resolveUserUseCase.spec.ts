@@ -1,7 +1,7 @@
 import { ResolveUserUseCase } from './resolveUserUseCase';
 import { UserRepositoryImpl } from '../repositories/inMemory/UserRepositoryImpl';
 import { User } from '../domains/entities/User';
-import { UserId } from '@/domains/valueObject/userId';
+import { UserId } from '@/domains/valueObject/UserId';
 
 describe('resolveUserUseCaseV2', () => {
   it('ユーザーが見つかれば、そのユーザーを返す', async () => {

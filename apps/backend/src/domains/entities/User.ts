@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { UserId } from '../valueObject/userId';
+import { UserId } from '../valueObject/UserId';
 
 export const UserType = { User: 'USER', Bot: 'BOT' } as const;
 export type UserType = (typeof UserType)[keyof typeof UserType];

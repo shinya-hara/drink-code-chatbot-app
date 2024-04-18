@@ -1,9 +1,9 @@
 import { ChatRoom } from '@/domains/entities/ChatRoom';
 import { ChatRoomRepository } from '@/domains/repositories/ChatRoomRepository';
-import { ChatRoomName } from '@/domains/valueObject/chatRoomName';
-import { ChatRoomId } from '@/domains/valueObject/chatRoomId';
+import { ChatRoomName } from '@/domains/valueObject/ChatRoomName';
+import { ChatRoomId } from '@/domains/valueObject/ChatRoomId';
 import { PrismaClient } from '@prisma/client';
-import { UserId } from '@/domains/valueObject/userId';
+import { UserId } from '@/domains/valueObject/UserId';
 
 export class ChatRoomRepositoryImpl implements ChatRoomRepository {
   constructor(private _prisma: PrismaClient) {}

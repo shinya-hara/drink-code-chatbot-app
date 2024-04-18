@@ -1,7 +1,7 @@
 import { ChatMessage } from '@/domains/entities/ChatMessage';
 import { User } from '@/domains/entities/User';
 import { ChatMessageRepository } from '@/domains/repositories/ChatMessageRepository';
-import { ChatRoomId } from '@/domains/valueObject/chatRoomId';
+import { ChatRoomId } from '@/domains/valueObject/ChatRoomId';
 
 export class CreateMessageUseCase {
   constructor(private _repository: ChatMessageRepository) {}

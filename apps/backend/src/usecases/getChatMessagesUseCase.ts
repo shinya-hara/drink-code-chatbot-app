@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { ChatMessageRepository } from '@/domains/repositories/ChatMessageRepository';
-import { ChatRoomId } from '@/domains/valueObject/chatRoomId';
+import { ChatRoomId } from '@/domains/valueObject/ChatRoomId';
 import { User } from '@/domains/entities/User';
 
 export class GetChatMessagesUseCase {

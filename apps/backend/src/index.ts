@@ -9,8 +9,8 @@ import { GetChatRoomsUseCase } from './usecases/getChatRoomsUseCase';
 import { GetChatMessagesUseCase } from './usecases/getChatMessagesUseCase';
 import { ChatRoomRepositoryImpl } from './repositories/supabase/ChatRoomRepositoryImpl';
 import { ChatMessageRepositoryImpl } from './repositories/supabase/ChatMessageRepositoryImpl';
-import { ChatRoomName } from './domains/valueObject/chatRoomName';
-import { ChatRoomId } from './domains/valueObject/chatRoomId';
+import { ChatRoomName } from './domains/valueObject/ChatRoomName';
+import { ChatRoomId } from './domains/valueObject/ChatRoomId';
 
 dotenv.config();
 const app = express();

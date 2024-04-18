@@ -3,7 +3,7 @@ import { createClient } from '../lib/supabase';
 import { ResolveUserUseCase } from '../usecases/resolveUserUseCase';
 import { prisma } from '../lib/prisma';
 import { UserRepositoryImpl } from '../repositories/supabase/UserRepositoryImpl';
-import { UserId } from '@/domains/valueObject/userId';
+import { UserId } from '@/domains/valueObject/UserId';
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   // Create supabase client

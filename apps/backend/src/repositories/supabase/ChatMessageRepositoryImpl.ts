@@ -2,8 +2,8 @@ import { ChatMessage } from '@/domains/entities/ChatMessage';
 import { User } from '@/domains/entities/User';
 import { ChatMessageRepository } from '@/domains/repositories/ChatMessageRepository';
 import { ChatMessageId } from '@/domains/valueObject/ChatMessageId';
-import { ChatRoomId } from '@/domains/valueObject/chatRoomId';
-import { UserId } from '@/domains/valueObject/userId';
+import { ChatRoomId } from '@/domains/valueObject/ChatRoomId';
+import { UserId } from '@/domains/valueObject/UserId';
 import { PrismaClient } from '@prisma/client';
 
 export class ChatMessageRepositoryImpl implements ChatMessageRepository {

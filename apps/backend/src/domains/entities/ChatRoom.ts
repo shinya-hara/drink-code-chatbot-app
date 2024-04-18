@@ -1,5 +1,5 @@
-import { ChatRoomName } from '../valueObject/chatRoomName';
-import { ChatRoomId } from '../valueObject/chatRoomId';
+import { ChatRoomName } from '../valueObject/ChatRoomName';
+import { ChatRoomId } from '../valueObject/ChatRoomId';
 
 export class ChatRoom {
   private constructor(

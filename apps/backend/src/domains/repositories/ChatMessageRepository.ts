@@ -1,6 +1,6 @@
 import { ChatMessage } from '../entities/ChatMessage';
-import { UserId } from '../valueObject/userId';
-import { ChatRoomId } from '../valueObject/chatRoomId';
+import { UserId } from '../valueObject/UserId';
+import { ChatRoomId } from '../valueObject/ChatRoomId';
 
 export interface ChatMessageRepository {
   findMany({
