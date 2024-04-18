@@ -13,13 +13,13 @@ export class ChatMessageRepositoryImpl implements ChatMessageRepository {
     userId,
     chatRoomId,
   }: {
-    userId: string;
-    chatRoomId: string;
+    userId: UserId;
+    chatRoomId: ChatRoomId;
   }): Promise<ChatMessage[]> {
     const result = await this._prisma.chatMessage.findMany({
       where: {
-        userId,
-        chatRoomId,
+        userId: userId.value,
+        chatRoomId: chatRoomId.value,
       },
       include: {
         user: true,

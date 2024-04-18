@@ -1,5 +1,7 @@
+import { PrismaClient } from '@prisma/client';
 import { ChatMessageRepository } from '@/domains/repositories/ChatMessageRepository';
-import { PrismaClient, type User } from '@prisma/client';
+import { ChatRoomId } from '@/domains/valueObject/chatRoomId';
+import { User } from '@/domains/entities/User';
 
 export class GetChatMessagesUseCase {
   constructor(
@@ -16,13 +18,13 @@ export class GetChatMessagesUseCase {
    *
    * FIXME:リファクタリング
    */
-  async execute({ user, chatRoomId }: { user: User; chatRoomId: string }) {
+  async execute({ user, chatRoomId }: { user: User; chatRoomId: ChatRoomId }) {
     // 1. user がその chatRoom に属しているか確認
     const exists = await this.prisma.usersChatRooms.findUnique({
       where: {
         userId_chatRoomId: {
-          userId: user.id,
-          chatRoomId,
+          userId: user.id.value,
+          chatRoomId: chatRoomId.value,
         },
       },
     });
