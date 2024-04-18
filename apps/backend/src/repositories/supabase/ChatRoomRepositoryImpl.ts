@@ -1,16 +1,17 @@
 import { ChatRoom } from '@/domains/entities/ChatRoom';
 import { ChatRoomRepository } from '@/domains/repositories/ChatRoomRepository';
-import { ChatRoomName } from '@/domains/valueObject/ChatRoomName';
+import { ChatRoomName } from '@/domains/valueObject/chatRoomName';
 import { ChatRoomId } from '@/domains/valueObject/chatRoomId';
 import { PrismaClient } from '@prisma/client';
+import { UserId } from '@/domains/valueObject/userId';
 
 export class ChatRoomRepositoryImpl implements ChatRoomRepository {
   constructor(private _prisma: PrismaClient) {}
 
-  async findMany(userId: string): Promise<ChatRoom[]> {
+  async findMany(userId: UserId): Promise<ChatRoom[]> {
     const _usersChatRooms = await this._prisma.usersChatRooms.findMany({
       where: {
-        userId,
+        userId: userId.value,
       },
       include: {
         chatRoom: true,
@@ -25,16 +26,16 @@ export class ChatRoomRepositoryImpl implements ChatRoomRepository {
     );
   }
 
-  async create(userId: string, name: string): Promise<ChatRoom> {
+  async create(userId: UserId, name: ChatRoomName): Promise<ChatRoom> {
     const _chatRoom = await this._prisma.chatRoom.create({
       data: {
         id: crypto.randomUUID(),
-        name,
+        name: name.value,
       },
     });
     await this._prisma.usersChatRooms.create({
       data: {
-        userId,
+        userId: userId.value,
         chatRoomId: _chatRoom.id,
       },
     });

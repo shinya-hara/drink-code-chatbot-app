@@ -9,6 +9,7 @@ import { GetChatRoomsUseCase } from './usecases/getChatRoomsUseCase';
 import { GetChatMessagesUseCase } from './usecases/getChatMessagesUseCase';
 import { ChatRoomRepositoryImpl } from './repositories/supabase/ChatRoomRepositoryImpl';
 import { ChatMessageRepositoryImpl } from './repositories/supabase/ChatMessageRepositoryImpl';
+import { ChatRoomName } from './domains/valueObject/chatRoomName';
 
 dotenv.config();
 const app = express();
@@ -43,9 +44,12 @@ app.get('/chat-rooms', async (req, res) => {
   res.status(200).json(result);
 });
 
-app.post('/chat-rooms', async (req, res) => {
+app.post('/chat-rooms', async (req: Request<{}, {}, { name: string }>, res) => {
   const useCase = new CreateChatRoomUseCase(new ChatRoomRepositoryImpl(prisma));
-  const result = await useCase.execute({ user: req.user, name: req.body.name });
+  const result = await useCase.execute({
+    user: req.user,
+    name: new ChatRoomName(req.body.name),
+  });
   res.status(201).json(result);
 });
 
