@@ -1,7 +1,6 @@
-import { ChatMessageId } from '../valueObject/ChatMessageId';
-import { ChatRoomId } from '../valueObject/ChatRoomId';
-import { ChatRoom } from './ChatRoom';
-import { User } from './User';
+import { type User } from './User';
+import { type ChatRoomId } from '../valueObject/ChatRoomId';
+import { type ChatMessageId } from '../valueObject/ChatMessageId';
 
 type ContentType = {
   type: 'text';

@@ -1,5 +1,5 @@
-import { ChatRoomName } from '../valueObject/ChatRoomName';
 import { ChatRoomId } from '../valueObject/ChatRoomId';
+import { type ChatRoomName } from '../valueObject/ChatRoomName';
 
 export class ChatRoom {
   private constructor(

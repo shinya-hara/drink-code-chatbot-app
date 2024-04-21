@@ -1,5 +1,5 @@
-import { User } from '../entities/User';
-import { UserId } from '../valueObject/UserId';
+import { type User } from '../entities/User';
+import { type UserId } from '../valueObject/UserId';
 
 export interface UserRepository {
   findUniqueById(id: UserId): Promise<User | void>;

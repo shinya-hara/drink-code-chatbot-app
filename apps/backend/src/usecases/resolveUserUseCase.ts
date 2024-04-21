@@ -1,6 +1,6 @@
 import { UserRepository } from '../domains/repositories/UserRepository';
 import { User, UserType } from '../domains/entities/User';
-import { UserId } from '@/domains/valueObject/UserId';
+import { type UserId } from '@/domains/valueObject/UserId';
 
 export class ResolveUserUseCase {
   constructor(private repository: UserRepository) {}
