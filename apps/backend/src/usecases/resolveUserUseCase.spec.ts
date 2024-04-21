@@ -1,13 +1,14 @@
 import { ResolveUserUseCase } from './resolveUserUseCase';
 import { UserRepositoryImpl } from '../repositories/inMemory/UserRepositoryImpl';
 import { User } from '../domains/entities/User';
+import { UserId } from '@/domains/valueObject/UserId';
 
 describe('resolveUserUseCaseV2', () => {
   it('ユーザーが見つかれば、そのユーザーを返す', async () => {
     // given
     const users = [
       User.create({
-        id: '1',
+        id: new UserId('1'),
         type: 'USER',
       }),
     ];
@@ -16,11 +17,11 @@ describe('resolveUserUseCaseV2', () => {
     const useCase = new ResolveUserUseCase(repository);
 
     // when
-    const user = await useCase.execute('1');
+    const user = await useCase.execute(new UserId('1'));
 
     // then
     expect(spy).not.toHaveBeenCalled();
-    expect(user.id).toBe('1');
+    expect(user.id.value).toBe('1');
     expect(user.type).toBe('USER');
   });
 
@@ -28,7 +29,7 @@ describe('resolveUserUseCaseV2', () => {
     // given
     const users = [
       User.create({
-        id: '1',
+        id: new UserId('1'),
         type: 'USER',
       }),
     ];
@@ -37,11 +38,11 @@ describe('resolveUserUseCaseV2', () => {
     const useCase = new ResolveUserUseCase(repository);
 
     // when
-    const user = await useCase.execute('2');
+    const user = await useCase.execute(new UserId('2'));
 
     // then
     expect(spy).toHaveBeenCalledTimes(1);
-    expect(user.id).toBe('2');
+    expect(user.id.value).toBe('2');
     expect(user.type).toBe('USER');
   });
 });

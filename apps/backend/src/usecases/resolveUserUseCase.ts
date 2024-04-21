@@ -1,10 +1,11 @@
 import { UserRepository } from '../domains/repositories/UserRepository';
 import { User, UserType } from '../domains/entities/User';
+import { type UserId } from '@/domains/valueObject/UserId';
 
 export class ResolveUserUseCase {
   constructor(private repository: UserRepository) {}
 
-  async execute(supabaseUserId: string) {
+  async execute(supabaseUserId: UserId) {
     const foundUser = await this.repository.findUniqueById(supabaseUserId);
     if (foundUser) return foundUser;
 

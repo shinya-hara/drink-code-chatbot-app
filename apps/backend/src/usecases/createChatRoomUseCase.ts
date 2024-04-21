@@ -1,6 +1,7 @@
-import { type User } from '@prisma/client';
 import { ChatRoomRepository } from '../domains/repositories/ChatRoomRepository';
-import { ChatRoom } from '../domains/entities/ChatRoom';
+import { type User } from '@/domains/entities/User';
+import { type ChatRoom } from '@/domains/entities/ChatRoom';
+import { type ChatRoomName } from '@/domains/valueObject/ChatRoomName';
 
 export class CreateChatRoomUseCase {
   constructor(private repository: ChatRoomRepository) {}
@@ -10,7 +11,7 @@ export class CreateChatRoomUseCase {
     name,
   }: {
     user: User;
-    name: string;
+    name: ChatRoomName;
   }): Promise<ChatRoom> {
     return await this.repository.create(user.id, name);
   }

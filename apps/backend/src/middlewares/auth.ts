@@ -3,6 +3,7 @@ import { createClient } from '../lib/supabase';
 import { ResolveUserUseCase } from '../usecases/resolveUserUseCase';
 import { prisma } from '../lib/prisma';
 import { UserRepositoryImpl } from '../repositories/supabase/UserRepositoryImpl';
+import { UserId } from '@/domains/valueObject/UserId';
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   // Create supabase client
@@ -18,7 +19,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 
   const useCase = new ResolveUserUseCase(new UserRepositoryImpl(prisma));
 
-  const _user = await useCase.execute(user.id);
+  const _user = await useCase.execute(new UserId(user.id));
   req.user = _user;
   console.log('resolved user!!!', req.user);
   next();

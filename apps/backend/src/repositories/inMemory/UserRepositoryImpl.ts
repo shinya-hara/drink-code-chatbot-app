@@ -1,11 +1,13 @@
 import { User } from '@/domains/entities/User';
 import { UserRepository } from '@/domains/repositories/UserRepository';
+import { UserId } from '@/domains/valueObject/UserId';
 
 export class UserRepositoryImpl implements UserRepository {
   constructor(private _users: User[] = []) {}
 
-  async findUniqueById(id: string): Promise<User | void> {
-    const user = this._users.find((user) => user.id === id);
+  async findUniqueById(id: UserId): Promise<User | void> {
+    // TODO: 暫定で.valueで比較。instanceofなどで比較詞たほうがよい？
+    const user = this._users.find((user) => user.id.value === id.value);
 
     if (!user) return;
 
