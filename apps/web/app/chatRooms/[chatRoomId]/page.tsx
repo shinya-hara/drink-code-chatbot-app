@@ -3,18 +3,7 @@ import { useParams } from "next/navigation";
 import { customFetch } from "@/utils/fetch";
 import { useEffect, useState } from "react";
 import { createClient, type User } from "@/utils/supabase/client";
-
-type JsonString = string;
-type DateString = string;
-
-type ChatMessage = {
-  id: number;
-  content: JsonString;
-  userId: string;
-  chatRoomId: string;
-  createdAt: DateString;
-  updatedAt: DateString;
-};
+import { type ChatMessage } from "@/domains/entities/ChatMessage";
 
 export default function ChatRoom() {
   const { chatRoomId } = useParams();
@@ -67,7 +56,7 @@ export default function ChatRoom() {
       <div className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
         <div className="flex flex-col gap-1">
           <div className="inline-block bg-white rounded px-2 py-1">
-            <p>{JSON.parse(message.content).text}</p>
+            <p>{message.content.text}</p>
           </div>
           <div className="text-xs text-gray-500 text-right">{date}</div>
         </div>

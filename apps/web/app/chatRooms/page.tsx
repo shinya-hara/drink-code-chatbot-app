@@ -2,10 +2,10 @@
 import { useState, useEffect } from "react";
 import { customFetch } from "@/utils/fetch";
 import Link from "next/link";
+import { ChatRoom } from "@/domains/entities/ChatRoom";
 
 export default function ChatRooms() {
-  // TODO: レスポンスの型を定義する
-  const [chatRooms, setChatRooms] = useState([]);
+  const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
 
   const createChatRoom = async (name: string) => {
     customFetch
@@ -35,14 +35,14 @@ export default function ChatRooms() {
       <h1>Chat Rooms</h1>
 
       <ul>
-        {chatRooms.map((chatRoom: any) => {
+        {chatRooms.map((chatRoom) => {
           return (
-            <li key={chatRoom.chatRoom.id}>
+            <li key={chatRoom.id}>
               <Link
-                href={`/chatRooms/${chatRoom.chatRoom.id}`}
+                href={`/chatRooms/${chatRoom.id}`}
                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
               >
-                {chatRoom.chatRoom.name}
+                {chatRoom.name}
               </Link>
             </li>
           );
