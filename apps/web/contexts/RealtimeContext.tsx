@@ -1,5 +1,5 @@
 "use client";
-import { createContext } from "react";
+import { createContext, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 
 export const RealtimeContext = createContext<any>(null); // null or session
@@ -16,15 +16,17 @@ export const RealtimeProvider = ({ children }: any) => {
     console.log("Change received!", payload);
   };
 
-  // Listen to inserts
-  supabase
-    .channel("ChatMessage")
-    .on(
-      "postgres_changes",
-      { event: "INSERT", schema: "public", table: "ChatMessage" },
-      handleInserts
-    )
-    .subscribe();
+  useEffect(() => {
+    // Listen to inserts
+    supabase
+      .channel("ChatMessage")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "ChatMessage" },
+        handleInserts
+      )
+      .subscribe();
+  }, []);
 
   return (
     <RealtimeContext.Provider value={supabase}>
