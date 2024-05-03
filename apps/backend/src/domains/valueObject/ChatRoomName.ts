@@ -1,6 +1,14 @@
 export class ChatRoomName {
-  constructor(private _value: string) {
-    // TODO: ユーザー名のバリデーションがあれば追加
+  private _value: string;
+
+  constructor(_value: string) {
+    _value = _value.trim();
+
+    if (_value.length < 1) {
+      throw new Error('ChatRoomName must be at least 1 characters');
+    }
+
+    this._value = _value;
   }
 
   get value() {
