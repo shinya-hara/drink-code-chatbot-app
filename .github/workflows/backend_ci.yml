@@ -19,6 +19,9 @@ jobs:
         with:
           version: 8.9.0
           run_install: true
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DIRECT_URL: ${{ secrets.DIRECT_URL}}
 
       - name: Run tests
         run: pnpm --filter backend test
