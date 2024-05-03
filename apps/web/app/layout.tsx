@@ -23,7 +23,8 @@ export default function RootLayout({
       <body className="bg-background text-foreground">
         <main>
           <AuthProvider>
-            <RealtimeProvider>{children}</RealtimeProvider>
+            {/* <RealtimeProvider>{children}</RealtimeProvider> */}
+            {children}
           </AuthProvider>
         </main>
       </body>

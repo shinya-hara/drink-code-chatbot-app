@@ -4,6 +4,23 @@ import { customFetch } from "@/utils/fetch";
 import { useEffect, useState } from "react";
 import { createClient, type User } from "@/utils/supabase/client";
 import { type ChatMessage } from "@/domains/entities/ChatMessage";
+import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
+
+type DateString = string;
+
+type NewChatMessage = {
+  chatRoomID: string;
+  content: Content;
+  createdAt: DateString;
+  id: number;
+  updatedAt: DateString;
+  userID: string;
+};
+
+export type Content = {
+  type: "text";
+  text: string;
+};
 
 export default function ChatRoom() {
   const { chatRoomId } = useParams();
@@ -32,11 +49,35 @@ export default function ChatRoom() {
       });
   };
 
+  const handleInserts = (
+    payload: RealtimePostgresInsertPayload<NewChatMessage>
+  ) => {
+    const newMessage: ChatMessage = {
+      id: payload.new.id,
+      chatRoomId: payload.new.chatRoomID,
+      content: payload.new.content,
+      createdAt: payload.new.createdAt,
+      userId: payload.new.userID,
+    };
+    // FIXME: 正しくmessagesを更新できていないので修正
+    setMessages([...messages, newMessage]);
+  };
+
   useEffect(() => {
     getChatMessages();
     supabase.auth.getUser().then(({ data }) => {
       setUser(data.user);
     });
+
+    // チャットメッセージのリアルタイム更新を受け取る
+    supabase
+      .channel("ChatMessage")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "ChatMessage" },
+        handleInserts
+      )
+      .subscribe();
   }, []);
 
   const ChatMessage = ({ message }: { message: ChatMessage }) => {

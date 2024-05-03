@@ -1,6 +1,6 @@
 type DateString = string;
 export type ChatMessage = {
-  id: string;
+  id: number;
   chatRoomId: string;
   userId: string;
   content: {
