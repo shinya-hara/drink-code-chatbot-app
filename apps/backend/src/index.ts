@@ -41,7 +41,13 @@ interface MessageRequest {
 
 app.get('/chat-rooms', async (req, res) => {
   const useCase = new GetChatRoomsUseCase(new ChatRoomRepositoryImpl(prisma));
-  const result = await useCase.execute({ user: req.user });
+  const _result = await useCase.execute({ user: req.user });
+  const result = _result.map((chatRoom) => {
+    return {
+      id: chatRoom.id.value,
+      name: chatRoom.name.value,
+    };
+  });
   res.status(200).json(result);
 });
 
@@ -59,10 +65,22 @@ app.get('/chat-rooms/:id/messages', async (req, res) => {
     new ChatMessageRepositoryImpl(prisma),
     prisma,
   );
-  const result = await useCase.execute({
+  const { messages: _messages } = await useCase.execute({
     user: req.user,
     chatRoomId: new ChatRoomId(req.params.id),
   });
+  const result = {
+    messages: _messages.map((message) => {
+      return {
+        id: message.id.value,
+        content: message.content,
+        userId: message.user.id.value,
+        chatRoomId: message.chatRoomId.value,
+        createdAt: message.createdAt,
+      };
+    }),
+  };
+
   res.status(200).json(result);
 });
 

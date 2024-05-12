@@ -3,17 +3,26 @@ import { useParams } from "next/navigation";
 import { customFetch } from "@/utils/fetch";
 import { useEffect, useState } from "react";
 import { createClient, type User } from "@/utils/supabase/client";
+import { type ChatMessage } from "@/domains/entities/ChatMessage";
+import {
+  RealtimeChannel,
+  RealtimePostgresInsertPayload,
+} from "@supabase/supabase-js";
 
-type JsonString = string;
 type DateString = string;
 
-type ChatMessage = {
-  id: number;
-  content: JsonString;
-  userId: string;
+type NewChatMessage = {
   chatRoomId: string;
+  content: Content;
   createdAt: DateString;
+  id: number;
   updatedAt: DateString;
+  userId: string;
+};
+
+export type Content = {
+  type: "text";
+  text: string;
 };
 
 export default function ChatRoom() {
@@ -24,30 +33,56 @@ export default function ChatRoom() {
   const supabase = createClient();
 
   const getChatMessages = async () => {
-    customFetch
+    return customFetch
       .get(`/chat-rooms/${chatRoomId}/messages`)
       .then((res) => res.json())
       .then((res: { messages: ChatMessage[] }) => {
         setMessages(res.messages);
+        return res.messages;
       });
   };
 
   const postChatMessage = async (message: string) => {
     await customFetch
       .post("/messages", { message, chatRoomId })
-      .then((res) => res.json())
-      .then((res: { message: string }) => {
-        console.log("Success", res);
-        // TODO: チャットルームの更新（メッセージの再取得）
-        // Supabase の Realtime API 使えるなら使ってみたい @see https://supabase.com/docs/guides/realtime
-      });
+      .then((res) => res.json());
+  };
+
+  const handleInsertsCreator = (messages: ChatMessage[]) => {
+    return (payload: RealtimePostgresInsertPayload<NewChatMessage>) => {
+      const { id, chatRoomId, content, createdAt, userId } = payload.new;
+      const newMessage: ChatMessage = {
+        id,
+        chatRoomId,
+        content,
+        createdAt,
+        userId,
+      };
+      setMessages([...messages, newMessage]);
+    };
   };
 
   useEffect(() => {
-    getChatMessages();
+    let channel: RealtimeChannel | undefined;
+
+    getChatMessages().then((messages: ChatMessage[]) => {
+      channel = supabase
+        .channel("ChatMessage")
+        .on(
+          "postgres_changes",
+          { event: "INSERT", schema: "public", table: "ChatMessage" },
+          handleInsertsCreator(messages)
+        )
+        .subscribe();
+    });
+
     supabase.auth.getUser().then(({ data }) => {
       setUser(data.user);
     });
+
+    return () => {
+      channel?.unsubscribe();
+    };
   }, []);
 
   const ChatMessage = ({ message }: { message: ChatMessage }) => {
@@ -67,7 +102,7 @@ export default function ChatRoom() {
       <div className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
         <div className="flex flex-col gap-1">
           <div className="inline-block bg-white rounded px-2 py-1">
-            <p>{JSON.parse(message.content).text}</p>
+            <p>{message.content.text}</p>
           </div>
           <div className="text-xs text-gray-500 text-right">{date}</div>
         </div>

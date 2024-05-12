@@ -53,7 +53,7 @@ export class ChatMessageRepositoryImpl implements ChatMessageRepository {
     await this._prisma.chatMessage.create({
       data: {
         userId: chatMessage.user.id.value,
-        content: chatMessage.content,
+        content: JSON.stringify(chatMessage.content),
         chatRoomId: chatMessage.chatRoomId.value,
         createdAt: chatMessage.createdAt,
         updatedAt: chatMessage.createdAt,
